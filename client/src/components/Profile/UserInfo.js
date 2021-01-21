@@ -3,6 +3,7 @@ import { Grid, InputLabel } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/styles';
 import TextField from '@material-ui/core/TextField';
+import { useGlobalContext } from '../../context/studyappContext';
 
 const useStyles = makeStyles({
     inputStyles: {
@@ -25,7 +26,8 @@ const UserInfo = props => {
     const [phone, setPhone] = useState('');
 
     const classes = useStyles();
-
+    const {profile} = useGlobalContext();
+    console.log(profile);
     return (
         //  User Info Grid Parent Container
         <Grid container item sm={12} className={classes.profileGrid}>

@@ -46,3 +46,16 @@ export const fetchProfile = () => async dispatch => {
         console.log(err.message);
     }
 };
+
+export const fetchUserInfo = () => async dispatch => {
+    try {
+        const res = await axios.get('/profile');
+        console.log(res.data);
+        dispatch({
+            type: 'updateProfile',
+            payload: res.data,
+        });
+    } catch (err) {
+        console.log(err.response);
+    }
+}

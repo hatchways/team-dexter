@@ -3,6 +3,7 @@ import { Grid, Typography } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 import profilePic from '../../static/images/profilePicSample.png';
+import DropzonePicture from '../DragzonePicture';
 
 const useStyles = makeStyles(theme => ({
     linkStyles: {
@@ -42,11 +43,13 @@ const Drawer = props => {
         >
             {/* Profile briefing container */}
             <Grid container item direction="column" alignItems="center" sm={4}>
-                <img
+                {/* <img
                     src={profilePic}
                     alt="Ashly Sanford"
                     className={classes.profilePic}
-                />
+                /> */}
+
+                <DropzonePicture />
 
                 <Typography className={classes.profileName} align="center">
                     Ashly Sanford

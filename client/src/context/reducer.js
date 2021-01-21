@@ -1,7 +1,10 @@
+import Profile from '../models/Profile';
+
 export const initialState = {
     isLoading: true,
     isAuth: false,
     userCourse: {},
+    profile: Profile,
 };
 
 export const reducer = (state, action) => {
@@ -26,6 +29,11 @@ export const reducer = (state, action) => {
                 ...state,
                 isLoading: true,
             };
+        case 'updateProfile':
+            return {
+                ...state,
+                profile: payload,
+        };
         default:
             throw new Error('No action type found!');
     }

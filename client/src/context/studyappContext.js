@@ -1,41 +1,30 @@
 import React, { createContext, useContext, useReducer } from 'react';
-import Profile from '../models/Profile';
 
 import { initialState, reducer } from './reducer';
 
 const AppContext = createContext({
     isLoading: true,
     isAuth: false,
-
     dispatch: () => {},
-  profile: {},
+    profile: {},
 });
 
-
-    
-});
-
-const initialState = {
-    isLoading: true,
-    profile: Profile,
-};
-
-const reducer = (state, action) => {
-    const { type, payload } = action;
-    switch (type) {
-        case 'updateProfile':
-            state.profile = payload;
-            return {
-                ...state,
-            };
-        case 'CASE_TWO':
-            return {
-                ...state,
-            };
-        default:
-            throw new Error('No action type found!');
-    }
-};
+// const reducer = (state, action) => {
+//     const { type, payload } = action;
+//     switch (type) {
+//         case 'updateProfile':
+//             state.profile = payload;
+//             return {
+//                 ...state,
+//             };
+//         case 'CASE_TWO':
+//             return {
+//                 ...state,
+//             };
+//         default:
+//             throw new Error('No action type found!');
+//     }
+// };
 
 
 const AppProvider = ({ children }) => {
