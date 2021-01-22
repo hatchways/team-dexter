@@ -11,11 +11,9 @@ router.get('/', verifyAuth, async function (req, res) {
     const userId = req.body.userId;
     const userDoc = await User.findById(userId)
         .populate({ path: 'courses', model: 'Course' })
-        .select('-password')
-        .catch(() => {
-            return null;
-        });
-    return userDoc ? res.send(userDoc) : res.sendStatus(500);
+        .select('-password');
+
+    return userDoc ? res.send(userDoc) : res.sendStatus(400);
 });
 
 // Gets all the current users courses

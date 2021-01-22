@@ -23,7 +23,7 @@ export const login = values => async dispatch => {
             return res.status;
         }
     } catch (err) {
-        console.log(err);
+        console.log(err.response);
         dispatch({ type: 'LOGIN_FAIL' });
         return err.response.data.response;
     }
@@ -31,31 +31,29 @@ export const login = values => async dispatch => {
 
 export const fetchProfile = () => async dispatch => {
     try {
-        const res = await axios.get('/user');
-        const response = await axios.get(`/universities/${res.data.university}`);
+        const res = await axios.get('/profile');
+
+        const { profile, user } = res.data;
+        const { courses, university } = user;
 
         dispatch({
             type: 'FETCH_USER_COURSES',
-            payload: {
-                school: response.data.name,
-                userCourses: res.data.courses,
-                schoolCourses: response.data.courses,
-            },
+            payload: [
+                {
+                    ...profile,
+                },
+                {
+                    school: university.name,
+                    userCourses: courses,
+                    schoolCourses: university.courses,
+                },
+            ],
         });
     } catch (err) {
         console.log(err.message);
     }
 };
 
-export const fetchUserInfo = () => async dispatch => {
-    try {
-        const res = await axios.get('/profile');
-        console.log(res.data);
-        dispatch({
-            type: 'updateProfile',
-            payload: res.data,
-        });
-    } catch (err) {
-        console.log(err.response);
-    }
-}
+export const logout = () => dispatch => {
+    dispatch({ type: 'LOGOUT' });
+};

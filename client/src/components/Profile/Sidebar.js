@@ -2,7 +2,6 @@ import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
-import profilePic from '../../static/images/profilePicSample.png';
 import DropzonePicture from '../DragzonePicture';
 
 const useStyles = makeStyles(theme => ({

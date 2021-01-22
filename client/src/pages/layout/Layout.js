@@ -9,7 +9,6 @@ const Layout = ({ children }) => {
 
     useEffect(() => {
         actions.fetchProfile()(dispatch);
-        actions.fetchUserInfo()(dispatch);
     }, [dispatch]);
 
     return (

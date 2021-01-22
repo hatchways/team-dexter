@@ -18,24 +18,29 @@ import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { NavLink, useHistory } from 'react-router-dom';
 
 import logo from '../../images/logo_study.png';
-import profileImg from '../../images/profile-pic.png';
+import profileImg from '../../images/empty_profile.png';
 import { useStyles } from './NavbarStyles';
 import { useGlobalContext } from '../../context/studyappContext';
+import * as actions from '../../context/actions';
 
 const Navbar = () => {
     const classes = useStyles();
 
     const history = useHistory();
 
-    const { profile, isLoading } = useGlobalContext();
-
+    const { profile, dispatch } = useGlobalContext();
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
-    const handleClose = () => {
+    const handleProfile = () => {
         setAnchorEl(null);
         history.push('/profile');
+    };
+
+    const handleLogout = () => {
+        actions.logout()(dispatch);
+        history.push('/login');
     };
 
     return (
@@ -61,6 +66,10 @@ const Navbar = () => {
                                 variant="inherit"
                                 underline="none"
                                 component={NavLink}
+                                activeStyle={{
+                                    fontWeight: 600,
+                                    color: '#2574FF',
+                                }}
                                 to="/forum"
                             >
                                 <ListItem>
@@ -72,6 +81,10 @@ const Navbar = () => {
                                 variant="inherit"
                                 underline="none"
                                 component={NavLink}
+                                activeStyle={{
+                                    fontWeight: 600,
+                                    color: '#2574FF',
+                                }}
                                 to="/groups"
                             >
                                 <ListItem>
@@ -83,6 +96,10 @@ const Navbar = () => {
                                 variant="inherit"
                                 underline="none"
                                 component={NavLink}
+                                activeStyle={{
+                                    fontWeight: 600,
+                                    color: '#2574FF',
+                                }}
                                 to="/chat"
                             >
                                 <ListItem>
@@ -95,7 +112,7 @@ const Navbar = () => {
                     <div className={classes.profile}>
                         <Avatar
                             alt="profiel_img"
-                            src={profile.imageUrl.length ? profile.imageUrl : profileImg}
+                            src={profile.imageUrl ? profile.imageUrl : profileImg}
                             className={classes.avatar}
                         />
                         <Button
@@ -117,13 +134,13 @@ const Navbar = () => {
                                 horizontal: 'center',
                             }}
                             open={open}
-                            onClose={handleClose}
+                            onClose={() => setAnchorEl(null)}
                         >
-                            <MenuItem onClick={() => history.push('/login')}>
+                            <MenuItem onClick={handleLogout}>
                                 <ExitToAppIcon className={classes.icons} />
                                 <Typography>Logout</Typography>
                             </MenuItem>
-                            <MenuItem onClick={handleClose}>
+                            <MenuItem onClick={handleProfile}>
                                 <AccountCircleIcon className={classes.icons} />
                                 <Typography>My Profile</Typography>
                             </MenuItem>
