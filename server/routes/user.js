@@ -64,6 +64,22 @@ router.put('/courses/:courseId', verifyAuth, async function (req, res, next) {
     }
 });
 
+// updates a user based on selected courses id
+router.post('/courses', verifyAuth, async function (req, res, next) {
+    const userId = req.body.userId;
+    try {
+        const user = await User.findByIdAndUpdate(userId, {
+            courses: req.body,
+        });
+        if (!user)
+            return res.status(400).json({ message: 'Can not update user' });
+        res.status(200).json({ user });
+    } catch (err) {
+        console.log(err.message);
+        res.send('Server Error');
+    }
+});
+
 //Remove a user from a course, sends the updated user
 router.delete('/courses/:courseId', verifyAuth, async function (req, res) {
     const courseId = req.params.courseId;
