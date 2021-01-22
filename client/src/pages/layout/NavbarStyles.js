@@ -56,4 +56,11 @@ export const useStyles = makeStyles(theme => ({
         },
     },
     icons: { marginRight: 8 },
+    linkStyles: {
+        textDecoration: 'none',
+        color: 'black',
+        fontSize: 18,
+        opacity: '50%',
+        marginLeft: 15,
+    },
 }));

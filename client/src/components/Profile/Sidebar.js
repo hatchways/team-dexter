@@ -1,8 +1,8 @@
 import React from 'react';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, Button } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
-
+import { useGlobalContext } from '../../context/studyappContext';
 import DragzonePicture from '../DragzonePicture';
 
 const useStyles = makeStyles(theme => ({
@@ -30,12 +30,16 @@ const useStyles = makeStyles(theme => ({
     },
     logoutStyles: {
         padding: '2em',
+        color: '#FFF',
+        background: theme.palette.primary.gradient,
+        height: 54,
+        margin: '2em',
     },
 }));
 
 const Drawer = props => {
     const classes = useStyles();
-
+    const { profile } = useGlobalContext();
     return (
         <Grid
             container
@@ -56,7 +60,7 @@ const Drawer = props => {
                 <DragzonePicture className={classes.profilePic} />
 
                 <Typography className={classes.profileName} align="center">
-                    Ashly Sanford
+                    {profile.firstName + ' ' + profile.lastName}
                 </Typography>
             </Grid>
 
@@ -105,7 +109,7 @@ const Drawer = props => {
             </Grid>
             <Grid container item>
                 <Grid item>
-                    <Typography className={classes.logoutStyles}>Logout</Typography>
+                    <Button className={classes.logoutStyles}>Logout</Button>
                 </Grid>
             </Grid>
         </Grid>

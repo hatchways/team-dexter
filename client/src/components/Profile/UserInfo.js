@@ -4,8 +4,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/styles';
 import TextField from '@material-ui/core/TextField';
 import { useGlobalContext } from '../../context/studyappContext';
+import axios from 'axios';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     inputStyles: {
         fontWeight: '600',
         width: 300,
@@ -16,84 +17,140 @@ const useStyles = makeStyles({
     profileGrid: {
         padding: '2em 0 0 2em',
     },
-});
+    button: {
+        color: '#FFF',
+        background: theme.palette.primary.gradient,
+        height: 54,
+        marginLeft: '1.2em',
+        marginTop: '1em',
+    },
+    container: {
+        padding: theme.spacing(0, 0, 0, 11),
+    },
+}));
 
-const UserInfo = props => {
-    const [firstName, setFirstName] = useState('Ashly');
-    const [lastName, setLastName] = useState('Sanford');
-    const [email, setEmail] = useState('usermail@gmail.com');
-    const [location, setLocation] = useState('+1 (202) 555 0192');
+const UserInfo = () => {
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
+    const [location, setLocation] = useState('');
     const [phone, setPhone] = useState('');
 
     const classes = useStyles();
     const { profile } = useGlobalContext();
     console.log(profile);
+
+    const handleSubmit = e => {
+        e.preventDefault();
+        const userInfo = {
+            firstName,
+            lastName,
+            email,
+            location,
+            phone,
+        };
+        axios.put(`/profile/${profile.user._id}`, userInfo);
+        console.log('update changes clicked');
+        // setFirstName(profile.firstName);
+        // setLastName(profile.lastName);
+        // setEmail(profile.email);
+        // setLocation(profile.location);
+        // setPhone(profile.phone);
+    };
+
     return (
-        //  User Info Grid Parent Container
-        <Grid container item sm={12} className={classes.profileGrid}>
-            <Grid item sm={12}>
-                <Typography variant="h1" className={classes.headerStyles}>
+        <Grid container direction="column" className={classes.container}>
+            <Grid
+                item
+                container
+                alignContent="center"
+                sm={2}
+                className={classes.headerContainer}
+            >
+                <Typography variant="h1" className={classes.header}>
                     Profile
                 </Typography>
             </Grid>
-            {/* First Name  */}
-            <Grid item>
-                <InputLabel className={classes.labelStyles}>First Name</InputLabel>{' '}
-                <TextField
-                    variant="outlined"
-                    hinttext="Change First Name.."
-                    onChange={e => setFirstName(e.target.value)}
-                    value={profile.firstName}
-                    className={classes.inputStyles}
-                />
-            </Grid>
+            <form noValidate autoComplete="off">
+                <Grid
+                    item
+                    container
+                    sm={10}
+                    alignContent="flex-start"
+                    justify="flex-start"
+                    spacing={4}
+                >
+                    <Grid item>
+                        <InputLabel className={classes.labelStyles}>
+                            First Name
+                        </InputLabel>
+                        <TextField
+                            id="outlined"
+                            hinttext="Change first name.."
+                            variant="outlined"
+                            defaultValue={profile.firstName}
+                            onChange={e => setFirstName(e.target.value)}
+                            className={classes.inputStyles}
+                        />
+                    </Grid>
+                    {/* Last Name */}
+                    <Grid item>
+                        <InputLabel className={classes.labelStyles}>Last Name</InputLabel>
+                        <TextField
+                            id="outlined"
+                            hinttext="Change last name.."
+                            variant="outlined"
+                            value={profile.lastName}
+                            onChange={e => setLastName(e.target.value)}
+                            className={classes.inputStyles}
+                        />
+                    </Grid>
+                    {/* Email */}
+                    <Grid item>
+                        <InputLabel className={classes.labelStyles}>Email</InputLabel>
+                        <TextField
+                            id="outlined"
+                            hinttext="Change email.."
+                            variant="outlined"
+                            value={'hardcodedemail'}
+                            onChange={e => setEmail(e.target.value)}
+                            className={classes.inputStyles}
+                        />
+                    </Grid>
 
-            {/* Last Name */}
-            <Grid item>
-                <InputLabel className={classes.labelStyles}>Last Name</InputLabel>{' '}
-                <TextField
-                    variant="outlined"
-                    hinttext="Change Last Name.."
-                    onChange={e => setLastName(e.target.value)}
-                    value={profile.lastName}
-                    className={classes.inputStyles}
-                />
-            </Grid>
-            {/* Email */}
-            <Grid item>
-                <InputLabel className={classes.labelStyles}>Email address</InputLabel>{' '}
-                <TextField
-                    variant="outlined"
-                    hinttext="Change Email..."
-                    onChange={e => setEmail(e.target.value)}
-                    value={''}
-                    className={classes.inputStyles}
-                />
-            </Grid>
-
-            {/* Phone */}
-            <Grid item>
-                <InputLabel className={classes.labelStyles}>Phone</InputLabel>{' '}
-                <TextField
-                    variant="outlined"
-                    hinttext="Change Phone Number..."
-                    onChange={e => setPhone(e.target.value)}
-                    value={profile.phone}
-                    className={classes.inputStyles}
-                />
-            </Grid>
-            {/* Location */}
-            <Grid item>
-                <InputLabel className={classes.labelStyles}>Location</InputLabel>{' '}
-                <TextField
-                    variant="outlined"
-                    hinttext="Change Location.."
-                    onChange={e => setLocation(e.target.value)}
-                    value={profile.location}
-                    className={classes.inputStyles}
-                />
-            </Grid>
-            <Button>Submit changes</Button>
+                    {/* Phone */}
+                    <Grid item>
+                        <InputLabel className={classes.labelStyles}>Phone</InputLabel>
+                        <TextField
+                            id="outlined"
+                            hinttext="Change phone.."
+                            variant="outlined"
+                            value={profile.phone}
+                            onChange={e => setPhone(e.target.value)}
+                            className={classes.inputStyles}
+                        />
+                    </Grid>
+                    {/* Location */}
+                    <Grid item>
+                        <InputLabel className={classes.labelStyles}>Location</InputLabel>
+                        <TextField
+                            id="outlined"
+                            hinttext="Change location.."
+                            variant="outlined"
+                            value={profile.location}
+                            onChange={e => setLocation(e.target.value)}
+                            className={classes.inputStyles}
+                        />
+                    </Grid>
+                    <Grid container>
+                        <Grid item>
+                            <Button className={classes.button} onClick={handleSubmit}>
+                                Submit Changes
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </form>
         </Grid>
     );
 };

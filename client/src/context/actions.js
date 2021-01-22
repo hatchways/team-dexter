@@ -47,6 +47,7 @@ export const logout = () => async dispatch => {
 export const fetchProfile = () => async dispatch => {
     try {
         const res = await axios.get('/profile');
+        console.log('res: ' + res.data);
         const { profile, user } = res.data;
         const { courses, university } = user;
         dispatch({
