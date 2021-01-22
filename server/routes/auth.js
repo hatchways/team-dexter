@@ -45,10 +45,10 @@ router.post('/register', validateEntryReq, async function(req, res, next) {
       const hashedPw = await bcrypt.hash(password, 10)
       .catch(() => {
         throw new GeneralError('Failed to hash password.')
-      })
+      });
       userInfo.password = hashedPw;
-
-      const userDoc = await user.save(userInfo)
+      const user = new User(userInfo);
+      const userDoc = await user.save(user)
       .catch((err) => {
         if (!err.errors || err.errors.email && err.errors.email.reason) {
           throw new GeneralError('Error connecting to database.');
