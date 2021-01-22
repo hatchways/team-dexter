@@ -2,7 +2,8 @@ import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
-import DropzonePicture from '../DragzonePicture';
+
+import DragzonePicture from '../DragzonePicture';
 
 const useStyles = makeStyles(theme => ({
     linkStyles: {
@@ -27,6 +28,9 @@ const useStyles = makeStyles(theme => ({
         paddingTop: '1em',
         fontSize: 22,
     },
+    logoutStyles: {
+        padding: '2em',
+    },
 }));
 
 const Drawer = props => {
@@ -37,18 +41,19 @@ const Drawer = props => {
             container
             direction="column"
             alignItems="center"
+            justify="space-between"
             item
             className={classes.drawer}
         >
             {/* Profile briefing container */}
-            <Grid container item direction="column" alignItems="center" sm={4}>
-                {/* <img
-                    src={profilePic}
-                    alt="Ashly Sanford"
-                    className={classes.profilePic}
-                /> */}
-
-                <DropzonePicture />
+            <Grid
+                container
+                item
+                direction="column"
+                alignItems="center"
+                style={{ marginTop: '3em' }}
+            >
+                <DragzonePicture className={classes.profilePic} />
 
                 <Typography className={classes.profileName} align="center">
                     Ashly Sanford
@@ -98,9 +103,9 @@ const Drawer = props => {
                     Notifications
                 </NavLink>
             </Grid>
-            <Grid container direction="column" item justify="flex-end" sm={4}>
+            <Grid container item>
                 <Grid item>
-                    <Typography>Logout</Typography>
+                    <Typography className={classes.logoutStyles}>Logout</Typography>
                 </Grid>
             </Grid>
         </Grid>

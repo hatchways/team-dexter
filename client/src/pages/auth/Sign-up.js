@@ -22,6 +22,7 @@ import { useSnackbar } from 'notistack';
 import logo from '../../images/logo.png';
 import { useStyles } from './Styles';
 import CourseList from './CourseList';
+import handleAuthErrors from '../../utils/handleAuthErrors';
 import * as actions from '../../context/actions';
 import { useGlobalContext } from '../../context/studyappContext';
 
@@ -131,21 +132,23 @@ const Signup = () => {
                             university: '',
                         }}
                         validationSchema={SignupSchema}
-                        onSubmit={async (values, { setSubmitting }) => {
+                        onSubmit={async (values, { setSubmitting, setErrors }) => {
                             values.courses = [...addedCourses].map(ac => ac._id);
                             actions
                                 .register(values)(dispatch)
                                 .then(res => {
-                                    if (res === 201) {
+                                    if (res.status === 201) {
                                         enqueueSnackbar('Registered successfully', {
                                             variant: 'success',
                                             autoHideDuration: '5000',
                                         });
-                                    } else {
-                                        enqueueSnackbar(res, {
+                                    } else if (res.status === 500) {
+                                        enqueueSnackbar('Server Error', {
                                             variant: 'Error',
                                             autoHideDuration: '5000',
                                         });
+                                    } else {
+                                        handleAuthErrors(res, setErrors)
                                     }
                                 });
                             setTimeout(() => {
@@ -153,7 +156,7 @@ const Signup = () => {
                             }, 500);
                         }}
                     >
-                        {({ submitForm, isSubmitting }) => (
+                        {({ submitForm, isSubmitting, errors }) => (
                             <Form className={classes.form}>
                                 <FormHelperText>Email address</FormHelperText>
                                 <Field

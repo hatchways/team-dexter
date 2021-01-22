@@ -1,5 +1,3 @@
-// import Profile from '../models/Profile';
-
 export const initialState = {
     isLoading: true,
     isAuth: false,
@@ -18,6 +16,7 @@ export const reducer = (state, action) => {
                 isLoading: false,
             };
         case 'FETCH_USER_COURSES':
+            console.log(payload);
             return {
                 ...state,
                 userCourse: payload[1],
@@ -30,16 +29,16 @@ export const reducer = (state, action) => {
                 ...state,
                 isLoading: true,
             };
-        case 'LOGOUT':
-            return {
-                ...state,
-                isLoading: true,
-                isAuth: false,
-            };
         case 'updateProfile':
             return {
                 ...state,
                 profile: payload,
+            };
+        case 'LOGOUT':
+            return {
+                ...state,
+                isAuth: false,
+                isLoading: true,
             };
         default:
             throw new Error('No action type found!');

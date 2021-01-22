@@ -1,32 +1,36 @@
-const bcrypt = require("bcrypt");
-const express = require("express");
-const jwt = require("jsonwebtoken");
+const bcrypt = require('bcrypt');
+const express = require('express');
+const jwt = require('jsonwebtoken');
 const router = express.Router();
-const User = require("../models/user");
+const User = require('../models/user');
 const validateBody = require('../middleware/validateBody');
 const validateEntryReq = validateBody.entry;
+const { GeneralError, NotFound, Unauthorized } = require('../utils/errors');
 
-router.post("/", validateEntryReq, async function(req, res) {
+router.post("/", validateEntryReq, async function(req, res, next) {
   const {email, password} = req.body;
-  const user = await User.findOne({email});
-  if (!user) {
-    res.status(404).send({ response: "Cannot find user" });
-  } else {
-    try {
-      if (await bcrypt.compare(password, user.password)) {
-        const token = jwt.sign(
-        { id: user.id },
-        process.env.SECRET_KEY,
-        { expiresIn: "180d" },
-        );
-        res.cookie("token", token, { httpOnly: true });
-        res.sendStatus(200);
-      } else {
-        res.status(403).send({ response: "Invalid credentials" });
-      }
-    } catch {
-      res.sendStatus(500);
-    }
+  try {
+    const user = await User.findOne({email})
+    .catch(() => {
+      throw new GeneralError('Error connecting to database')
+    });
+    if (!user) throw new NotFound('No user found');
+
+    const match = await bcrypt.compare(password, user.password)
+    .catch(() => { throw new GeneralError('Error decrypting password')});
+
+    if (!match) throw new Unauthorized('Invalid credentials');
+
+    const token = jwt.sign(
+    { id: user.id },
+    process.env.SECRET_KEY,
+    { expiresIn: "180d" },
+    );
+    res.cookie("token", token, { httpOnly: true });
+    res.sendStatus(200);
+
+  } catch (error) {
+    next(error);
   }
 });
 

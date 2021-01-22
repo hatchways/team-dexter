@@ -32,8 +32,8 @@ function App() {
                             <Route exact path="/login" component={Login} />
 
                             <Layout>
-                                <Route exact path="/profile" component={Profile} />
-                                <Route
+                                <ProtectedRoute exact path="/profile" component={Profile} />
+                                <ProtectedRoute
                                     path="/profile/:profileContent"
                                     component={Profile}
                                 />

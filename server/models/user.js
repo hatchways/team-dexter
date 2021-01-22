@@ -39,6 +39,12 @@ const userSchema = mongoose.Schema({
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'Course',
     },
+    groups: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Group',
+        },
+    ],
 });
 
 module.exports = mongoose.model('User', userSchema);

@@ -14,11 +14,9 @@ router.get('/', auth, async (req, res, next) => {
         const profile = await Profile.findOne({
             user: req.body.userId,
         }).populate('user', ['email']);
-
         if (!profile) {
             throw new NotFound('No profile found.');
         }
-
         const user = await User.findById(req.body.userId)
             .populate({
                 path: 'courses',
@@ -33,17 +31,14 @@ router.get('/', auth, async (req, res, next) => {
                 },
             })
             .select('-password');
-
         if (!user) return res.status(400).json({ message: 'No user found' });
-
         const userInfo = {
             profile,
             user,
         };
-
         res.json(userInfo);
     } catch (err) {
-        next();
+        next(err);
     }
 });
 

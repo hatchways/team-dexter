@@ -10,7 +10,7 @@ import {
 import { useGlobalContext } from '../context/studyappContext';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
-import defaultImage from '../images/profile_picture.png';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
 const ProfilePic = () => {
     const classes = useStyles();
@@ -60,11 +60,17 @@ const ProfilePic = () => {
         <Box className={classes.container}>
             <Tooltip title="Drag and drop profile picture" arrow placement="right">
                 <Box {...getRootProps({ style })}>
-                    <Avatar
-                        alt="Profile Pic"
-                        src={profile.imageUrl ? profile.imageUrl : defaultImage}
-                        className={uploading ? classes.uploading : classes.large}
-                    />
+                    {profile.imageUrl ? (
+                        <Avatar
+                            alt="Profile Pic"
+                            src={profile.imageUrl}
+                            className={uploading ? classes.uploading : classes.large}
+                        />
+                    ) : (
+                        <Avatar className={classes.large}>
+                            <PersonAddIcon className={classes.large} />
+                        </Avatar>
+                    )}
                 </Box>
             </Tooltip>
         </Box>

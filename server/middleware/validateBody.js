@@ -8,25 +8,26 @@ const { body, validationResult } = require('express-validator');
 const { BadRequest } = require('../utils/errors');
 
 validate_entry = [
-    body('email').exists().trim().isEmail().normalizeEmail(),
-    body('password').exists().isLength({ min: 6 }),
-    body('courses').custom(courses => {
-        if (courses) {
-            return Array.isArray(courses);
-        }
-        return true;
-    }),
-    (req, res, next) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            const err = new BadRequest('Missing or invalid field(s)');
-            return res.status(err.getCode()).send({
-                status: 'Error',
-                response: err.response,
-            });
-        }
-        next();
-    },
+  body('email').exists().trim().isEmail().normalizeEmail(),
+  body('password').exists().isLength({ min: 6 }),
+  body('courses').custom(courses => {
+      if (courses) {
+          return Array.isArray(courses);
+      }
+      return true;
+  }),
+  (req, res, next) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+          const response = errors.errors.map(err => err.param);
+          const err = new BadRequest(response);
+          return res.status(err.getCode()).send({
+            status: 'Error',
+            response: err.response,
+          });
+      }
+      next();
+  },
 ];
 
 module.exports = {

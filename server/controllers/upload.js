@@ -24,16 +24,16 @@ async function streamUpload(req, res, next) {
       
               streamifier.createReadStream(req.file.buffer).pipe(stream);
           });
-      }
+        }
     
-      const result = await streamUpload(req);
-      if(!result) {
-        throw new GeneralError("Upload error.")
-      }
-      req.body.imageUrl = result.url;
-      next();
+        const result = await streamUpload(req);
+        if(!result) {
+            throw new GeneralError("Upload error.")
+        }
+        req.body.imageUrl = result.url;
+        next();
     } catch(err) {
-        next(err)
+        next(err);
     }
 };
 

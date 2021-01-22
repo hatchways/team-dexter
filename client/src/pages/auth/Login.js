@@ -16,6 +16,7 @@ import { useSnackbar } from 'notistack';
 
 import logo from '../../images/logo.png';
 import { useStyles } from './Styles';
+import handleAuthErrors from '../../utils/handleAuthErrors';
 import { useGlobalContext } from '../../context/studyappContext';
 import * as actions from '../../context/actions';
 
@@ -73,20 +74,23 @@ const Login = () => {
                             password: '',
                         }}
                         validationSchema={LoginSchema}
-                        onSubmit={async (values, { setSubmitting }) => {
+                        onSubmit={async (values, { setSubmitting, setErrors }) => {
                             actions
                                 .login(values)(dispatch)
                                 .then(res => {
-                                    if (res === 200) {
+                                    if (res.status === 200) {
                                         enqueueSnackbar('Logged in successfully', {
                                             variant: 'success',
                                             autoHideDuration: '5000',
                                         });
-                                    } else {
-                                        enqueueSnackbar(res, {
+                                    } else if (res.status === 500) {
+                                        enqueueSnackbar('Server Error', {
                                             variant: 'Error',
                                             autoHideDuration: '5000',
                                         });
+                                    } else {
+                                        console.log(res)
+                                        handleAuthErrors(res, setErrors);
                                     }
                                 });
                             setTimeout(() => {
