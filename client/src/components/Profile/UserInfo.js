@@ -30,32 +30,32 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UserInfo = () => {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [email, setEmail] = useState('');
-    const [location, setLocation] = useState('');
-    const [phone, setPhone] = useState('');
+    const { profile } = useGlobalContext();
+    const [firstName, setFirstName] = useState(profile.firstName);
+    const [lastName, setLastName] = useState(profile.lastName);
+    const [email, setEmail] = useState(profile.user.email);
+    const [location, setLocation] = useState(profile.location);
+    const [phone, setPhone] = useState(profile.phone);
 
     const classes = useStyles();
-    const { profile } = useGlobalContext();
-    console.log(profile);
 
-    const handleSubmit = e => {
+    console.log(profile.user.email);
+
+    const handleSubmit = async e => {
         e.preventDefault();
         const userInfo = {
             firstName,
             lastName,
-            email,
             location,
             phone,
         };
-        axios.put(`/profile/${profile.user._id}`, userInfo);
-        console.log('update changes clicked');
-        // setFirstName(profile.firstName);
-        // setLastName(profile.lastName);
-        // setEmail(profile.email);
-        // setLocation(profile.location);
-        // setPhone(profile.phone);
+
+        try {
+            const res = await axios.put('/profile', userInfo);
+            console.log(res.data);
+        } catch (err) {
+            console.log(err.message);
+        }
     };
 
     return (
@@ -88,7 +88,7 @@ const UserInfo = () => {
                             id="outlined"
                             hinttext="Change first name.."
                             variant="outlined"
-                            defaultValue={profile.firstName}
+                            defaultValue={firstName}
                             onChange={e => setFirstName(e.target.value)}
                             className={classes.inputStyles}
                         />
@@ -100,7 +100,7 @@ const UserInfo = () => {
                             id="outlined"
                             hinttext="Change last name.."
                             variant="outlined"
-                            value={profile.lastName}
+                            value={lastName}
                             onChange={e => setLastName(e.target.value)}
                             className={classes.inputStyles}
                         />
@@ -112,7 +112,7 @@ const UserInfo = () => {
                             id="outlined"
                             hinttext="Change email.."
                             variant="outlined"
-                            value={'hardcodedemail'}
+                            value={email}
                             onChange={e => setEmail(e.target.value)}
                             className={classes.inputStyles}
                         />
@@ -125,7 +125,7 @@ const UserInfo = () => {
                             id="outlined"
                             hinttext="Change phone.."
                             variant="outlined"
-                            value={profile.phone}
+                            value={phone}
                             onChange={e => setPhone(e.target.value)}
                             className={classes.inputStyles}
                         />
@@ -137,7 +137,7 @@ const UserInfo = () => {
                             id="outlined"
                             hinttext="Change location.."
                             variant="outlined"
-                            value={profile.location}
+                            value={location}
                             onChange={e => setLocation(e.target.value)}
                             className={classes.inputStyles}
                         />

@@ -7,7 +7,7 @@ import { theme } from './themes/theme';
 import Profile from './pages/Profile';
 import Signup from './pages/auth/Sign-up';
 import Login from './pages/auth/Login';
-// import ProtectedRoute from './pages/routing/ProtectedRoute';
+import ProtectedRoute from './pages/routing/ProtectedRoute';
 import Chat from './pages/contentPages/Chat';
 import Forum from './pages/contentPages/Forum';
 import Groups from './pages/contentPages/Groups';
@@ -32,14 +32,18 @@ function App() {
                             <Route exact path="/login" component={Login} />
 
                             <Layout>
-                                <ProtectedRoute exact path="/profile" component={Profile} />
+                                <ProtectedRoute
+                                    exact
+                                    path="/profile"
+                                    component={Profile}
+                                />
                                 <ProtectedRoute
                                     path="/profile/:profileContent"
                                     component={Profile}
                                 />
-                                <Route path="/forum" component={Forum} />
-                                <Route path="/groups" component={Groups} />
-                                <Route path="/chat" component={Chat} />
+                                <ProtectedRoute path="/forum" component={Forum} />
+                                <ProtectedRoute path="/groups" component={Groups} />
+                                <ProtectedRoute path="/chat" component={Chat} />
                             </Layout>
 
                             {/* Any other unknown paths redirects to sign-up. */}

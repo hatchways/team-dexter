@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/styles';
 import { useGlobalContext } from '../../context/studyappContext';
 import DragzonePicture from '../DragzonePicture';
+import * as actions from '../../context/actions';
 
 const useStyles = makeStyles(theme => ({
     linkStyles: {
@@ -39,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 
 const Drawer = props => {
     const classes = useStyles();
-    const { profile } = useGlobalContext();
+    const { profile, dispatch } = useGlobalContext();
     return (
         <Grid
             container
@@ -109,7 +110,12 @@ const Drawer = props => {
             </Grid>
             <Grid container item>
                 <Grid item>
-                    <Button className={classes.logoutStyles}>Logout</Button>
+                    <Button
+                        className={classes.logoutStyles}
+                        onClick={() => actions.logout()(dispatch)}
+                    >
+                        Logout
+                    </Button>
                 </Grid>
             </Grid>
         </Grid>

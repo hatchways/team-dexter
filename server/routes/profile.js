@@ -43,6 +43,6 @@ router.get('/', auth, async (req, res, next) => {
 });
 
 //Updates user profile fields based on ID and populates email
-router.put('/:user_id', auth, updateProfile);
+router.put('/', auth, updateProfile);
 
 module.exports = router;
