@@ -67,7 +67,7 @@ router.put('/courses/:courseId', verifyAuth, async function (req, res, next) {
 // updates a user based on selected courses id
 router.post('/courses', verifyAuth, async function (req, res, next) {
     const userId = req.body.userId;
-    console.log(userId);
+
     try {
         const user = await User.findByIdAndUpdate(userId, {
             courses: req.body,
