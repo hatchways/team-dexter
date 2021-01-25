@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Grid, InputLabel, Button, Typography, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { useSnackbar } from 'notistack';
@@ -95,6 +95,7 @@ const UserInfo = () => {
                             defaultValue={firstName}
                             onChange={e => setFirstName(e.target.value)}
                             className={classes.inputStyles}
+                            placeholder="Add a first name.."
                         />
                     </Grid>
                     {/* Last Name */}
@@ -105,6 +106,7 @@ const UserInfo = () => {
                             value={lastName}
                             onChange={e => setLastName(e.target.value)}
                             className={classes.inputStyles}
+                            placeholder="Add a last name.."
                         />
                     </Grid>
                     {/* Email */}
@@ -126,6 +128,7 @@ const UserInfo = () => {
                             value={phone}
                             onChange={e => setPhone(e.target.value)}
                             className={classes.inputStyles}
+                            placeholder="Add phone number.."
                         />
                     </Grid>
                     {/* Location */}
@@ -136,6 +139,7 @@ const UserInfo = () => {
                             value={location}
                             onChange={e => setLocation(e.target.value)}
                             className={classes.inputStyles}
+                            placeholder="eg. Toronto"
                         />
                     </Grid>
                     <Grid container>
