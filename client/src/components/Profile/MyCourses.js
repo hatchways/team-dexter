@@ -18,6 +18,7 @@ import DeleteIcon from '@material-ui/icons/DeleteOutlineOutlined';
 import axios from 'axios';
 import { useSnackbar } from 'notistack';
 import { useGlobalContext } from '../../context/studyappContext';
+import * as actions from '../../context/actions';
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -72,7 +73,7 @@ const useStyles = makeStyles(theme => ({
 
 const MyCourses = () => {
     const { enqueueSnackbar } = useSnackbar();
-    const { isLoading, userCourse } = useGlobalContext();
+    const { isLoading, userCourse, dispatch } = useGlobalContext();
 
     const { school, userCourses, schoolCourses } = userCourse;
 
@@ -97,21 +98,19 @@ const MyCourses = () => {
         if (JSON.stringify(myCourses) === JSON.stringify(userCourses)) return;
 
         const courses = [...myCourses].map(c => c._id);
-        try {
-            const res = await axios.post('/user/courses', courses);
-            if (res.status === 200) {
-                enqueueSnackbar('Updated successfully', {
-                    variant: 'success',
-                    autoHideDuration: '5000',
-                });
-            } else {
-                enqueueSnackbar(res.messages, {
-                    variant: 'Error',
-                    autoHideDuration: '5000',
-                });
-            }
-        } catch (err) {
-            console.log(err);
+
+        const res = await actions.updateCourses(courses)(dispatch);
+
+        if (res.status === 200) {
+            enqueueSnackbar('Updated successfully', {
+                variant: 'success',
+                autoHideDuration: '5000',
+            });
+        } else {
+            enqueueSnackbar(res.messages, {
+                variant: 'Error',
+                autoHideDuration: '5000',
+            });
         }
     };
 

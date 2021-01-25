@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { Grid, InputLabel, Button } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
+import React, { useState, useEffect } from 'react';
+import { Grid, InputLabel, Button, Typography, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import TextField from '@material-ui/core/TextField';
+import { useSnackbar } from 'notistack';
+
 import { useGlobalContext } from '../../context/studyappContext';
-import axios from 'axios';
+import * as actions from '../../context/actions';
 
 const useStyles = makeStyles(theme => ({
     inputStyles: {
@@ -23,6 +23,7 @@ const useStyles = makeStyles(theme => ({
         height: 54,
         marginLeft: '1.2em',
         marginTop: '1em',
+        width: 300,
     },
     container: {
         padding: theme.spacing(0, 0, 0, 11),
@@ -30,16 +31,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const UserInfo = () => {
-    const { profile } = useGlobalContext();
+    const { profile, dispatch } = useGlobalContext();
+    const classes = useStyles();
+    const { enqueueSnackbar } = useSnackbar();
+
     const [firstName, setFirstName] = useState(profile.firstName);
     const [lastName, setLastName] = useState(profile.lastName);
     const [email, setEmail] = useState(profile.user.email);
     const [location, setLocation] = useState(profile.location);
     const [phone, setPhone] = useState(profile.phone);
-
-    const classes = useStyles();
-
-    console.log(profile.user.email);
 
     const handleSubmit = async e => {
         e.preventDefault();
@@ -50,11 +50,17 @@ const UserInfo = () => {
             phone,
         };
 
-        try {
-            const res = await axios.put('/profile', userInfo);
-            console.log(res.data);
-        } catch (err) {
-            console.log(err.message);
+        const res = await actions.updateProfile(userInfo)(dispatch);
+        if (res.status === 200) {
+            enqueueSnackbar('Updated successfully', {
+                variant: 'success',
+                autoHideDuration: '5000',
+            });
+        } else {
+            enqueueSnackbar(res.messages, {
+                variant: 'Error',
+                autoHideDuration: '5000',
+            });
         }
     };
 
@@ -85,8 +91,6 @@ const UserInfo = () => {
                             First Name
                         </InputLabel>
                         <TextField
-                            id="outlined"
-                            hinttext="Change first name.."
                             variant="outlined"
                             defaultValue={firstName}
                             onChange={e => setFirstName(e.target.value)}
@@ -97,8 +101,6 @@ const UserInfo = () => {
                     <Grid item>
                         <InputLabel className={classes.labelStyles}>Last Name</InputLabel>
                         <TextField
-                            id="outlined"
-                            hinttext="Change last name.."
                             variant="outlined"
                             value={lastName}
                             onChange={e => setLastName(e.target.value)}
@@ -109,8 +111,6 @@ const UserInfo = () => {
                     <Grid item>
                         <InputLabel className={classes.labelStyles}>Email</InputLabel>
                         <TextField
-                            id="outlined"
-                            hinttext="Change email.."
                             variant="outlined"
                             value={email}
                             onChange={e => setEmail(e.target.value)}
@@ -122,8 +122,6 @@ const UserInfo = () => {
                     <Grid item>
                         <InputLabel className={classes.labelStyles}>Phone</InputLabel>
                         <TextField
-                            id="outlined"
-                            hinttext="Change phone.."
                             variant="outlined"
                             value={phone}
                             onChange={e => setPhone(e.target.value)}
@@ -134,8 +132,6 @@ const UserInfo = () => {
                     <Grid item>
                         <InputLabel className={classes.labelStyles}>Location</InputLabel>
                         <TextField
-                            id="outlined"
-                            hinttext="Change location.."
                             variant="outlined"
                             value={location}
                             onChange={e => setLocation(e.target.value)}
@@ -145,7 +141,7 @@ const UserInfo = () => {
                     <Grid container>
                         <Grid item>
                             <Button className={classes.button} onClick={handleSubmit}>
-                                Submit Changes
+                                Submit
                             </Button>
                         </Grid>
                     </Grid>

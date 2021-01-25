@@ -74,7 +74,7 @@ const Login = () => {
                             password: '',
                         }}
                         validationSchema={LoginSchema}
-                        onSubmit={async (values, { setSubmitting, setErrors }) => {
+                        onSubmit={(values, { setSubmitting, setErrors }) => {
                             actions
                                 .login(values)(dispatch)
                                 .then(res => {
@@ -89,7 +89,7 @@ const Login = () => {
                                             autoHideDuration: '5000',
                                         });
                                     } else {
-                                        console.log(res)
+                                        console.log(res);
                                         handleAuthErrors(res, setErrors);
                                     }
                                 });
