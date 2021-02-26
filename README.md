@@ -136,6 +136,7 @@ See the [open issues](https://github.com/timegambit/Study-App/issues) for a list
 <ol> 
   <li>Ethan Tam - ethan.stewart.tam@gmail.com</li>
   <li>Jonathan Quagliariello - jon.quag@gmail.com</li>
+  <li>Amha Desta - amha7819@gmail.com</li>
 </ol>
 
 <!-- ACKNOWLEDGEMENTS -->
